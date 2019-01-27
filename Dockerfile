@@ -18,7 +18,9 @@ RUN apk add --no-cache \
 	python3-dev \
 	libxml2-dev \
 	libxslt-dev &&\
-    pip install --upgrade --compile \
+    pip install --upgrade \
+        pip \
+	flexget \
     	transmissionrpc \
 	python-telegram-bot \
 	python-slugify \
@@ -33,5 +35,9 @@ RUN apk add --no-cache \
 	libxslt-dev &&\
     rm -rf /tmp/* /root/.cache
 VOLUME /config /data
+ENV FLEXGET_LOGLEVEL=info
 WORKDIR /config
 EXPOSE 3539 3539/tcp
+COPY root/ /
+RUN chmod +x /scripts/init.sh
+CMD ["/scripts/init.sh"]
